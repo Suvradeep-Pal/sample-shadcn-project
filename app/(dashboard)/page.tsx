@@ -390,9 +390,9 @@ export default function DashboardPage() {
   )
 }
 
-// ============================================
+// =============================================
 // REUSABLE COMPONENT — StatsCard
-// ============================================
+// =============================================
 // Study this pattern, then build the remaining sections.
 
 function StatsCard({
