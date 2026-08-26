@@ -85,6 +85,34 @@ export default function DashboardPage() {
       timeClassName: "text-slate-500",
     },
   ]
+
+  const recentPatients = [
+    {
+      patient: "Emily Johnson",
+      initials: "EJ",
+      id: "PT-10245",
+      ageGender: "32 · Female",
+      lastVisit: "Aug 18",
+      status: "Stable",
+    },
+    {
+      patient: "Michael Brown",
+      initials: "MB",
+      id: "PT-10312",
+      ageGender: "45 · Male",
+      lastVisit: "Aug 16",
+      status: "Follow-up",
+    },
+    {
+      patient: "Olivia Davis",
+      initials: "OD",
+      id: "PT-10198",
+      ageGender: "28 · Female",
+      lastVisit: "Aug 14",
+      status: "Stable",
+    },
+  ]
+
   return (
     <div>
       {/* Welcome Section */}
@@ -163,7 +191,7 @@ export default function DashboardPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-primary hover:bg-transparent hover:text-primary/80"
+                className="cursor-pointer text-primary hover:bg-transparent hover:text-primary/80"
               >
                 View all
               </Button>
@@ -220,7 +248,11 @@ export default function DashboardPage() {
                       </TableCell>
 
                       <TableCell className="px-5 text-right">
-                        <Button variant="outline" size="sm">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="cursor-pointer text-primary"
+                        >
                           View
                         </Button>
                       </TableCell>
@@ -274,13 +306,93 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Recent Patients */}
+      <Card className="mb-6">
+        <CardContent className="p-0">
+          {/* Section Heading */}
+          <div className="flex items-center justify-between px-5 pt-1 pb-4">
+            <h3 className="text-base font-semibold">Recent Patients</h3>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className="cursor-pointer text-primary hover:bg-transparent hover:text-primary/80"
+            >
+              View all
+            </Button>
+          </div>
+
+          {/* Table */}
+          <div className="border-t">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="px-5">PATIENT</TableHead>
+                  <TableHead>ID</TableHead>
+                  <TableHead>AGE / GENDER</TableHead>
+                  <TableHead>LAST VISIT</TableHead>
+                  <TableHead>STATUS</TableHead>
+                  <TableHead className="px-5 text-right">ACTION</TableHead>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {recentPatients.map((patient) => (
+                  <TableRow key={patient.id}>
+                    <TableCell className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <Avatar size="sm">
+                          <AvatarFallback>{patient.initials}</AvatarFallback>
+                        </Avatar>
+
+                        <span className="font-medium">{patient.patient}</span>
+                      </div>
+                    </TableCell>
+
+                    <TableCell className="text-muted-foreground">
+                      {patient.id}
+                    </TableCell>
+
+                    <TableCell>{patient.ageGender}</TableCell>
+
+                    <TableCell>{patient.lastVisit}</TableCell>
+
+                    <TableCell>
+                      <Badge
+                        className={
+                          patient.status === "Stable"
+                            ? "bg-green-100 text-green-700 hover:bg-green-100"
+                            : "bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
+                        }
+                      >
+                        {patient.status}
+                      </Badge>
+                    </TableCell>
+
+                    <TableCell className="px-5 text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="cursor-pointer text-primary"
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
-// ============================================
+// =============================================
 // REUSABLE COMPONENT — StatsCard
-// ============================================
+// =============================================
 // Study this pattern, then build the remaining sections.
 
 function StatsCard({
