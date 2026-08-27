@@ -23,6 +23,8 @@ export default function DashboardPage() {
     {
       patient: "Emily Johnson",
       initials: "EJ",
+      avatarColor: "rgb(220, 236, 248)",
+      avatarTextColor: "rgb(91, 155, 194)",
       time: "09:30 AM",
       type: "Follow-up",
       status: "Confirmed",
@@ -30,6 +32,8 @@ export default function DashboardPage() {
     {
       patient: "Michael Brown",
       initials: "MB",
+      avatarColor: "rgb(232, 246, 243)",
+      avatarTextColor: "rgb(95, 184, 168)",
       time: "10:15 AM",
       type: "Consultation",
       status: "Waiting",
@@ -37,6 +41,8 @@ export default function DashboardPage() {
     {
       patient: "Olivia Davis",
       initials: "OD",
+      avatarColor: "rgb(240, 234, 248)",
+      avatarTextColor: "rgb(154, 131, 196)",
       time: "11:00 AM",
       type: "Check-up",
       status: "Confirmed",
@@ -44,6 +50,8 @@ export default function DashboardPage() {
     {
       patient: "James Wilson",
       initials: "JW",
+      avatarColor: "rgb(253, 232, 231)",
+      avatarTextColor: "rgb(217, 121, 115)",
       time: "11:45 AM",
       type: "Follow-up",
       status: "Completed",
@@ -54,6 +62,8 @@ export default function DashboardPage() {
     {
       patient: "John Smith",
       initials: "JS",
+      avatarColor: "white",
+      avatarTextColor: "rgb(217, 121, 115)",
       message: "Blood pressure reading requires review.",
       time: "10 minutes ago",
       className: "bg-red-50",
@@ -65,6 +75,8 @@ export default function DashboardPage() {
     {
       patient: "Maria Thomas",
       initials: "MT",
+      avatarColor: "white",
+      avatarTextColor: "rgb(231, 185, 104)",
       message: "Follow-up appointment overdue.",
       time: "2 hours ago",
       className: "bg-amber-50",
@@ -76,6 +88,8 @@ export default function DashboardPage() {
     {
       patient: "Robert Lee",
       initials: "RL",
+      avatarColor: "white",
+      avatarTextColor: "rgb(95, 184, 168)",
       message: "Lab results ready for review.",
       time: "3 hours ago",
       className: "bg-teal-50",
@@ -90,6 +104,8 @@ export default function DashboardPage() {
     {
       patient: "Emily Johnson",
       initials: "EJ",
+      avatarColor: "rgb(220, 236, 248)",
+      avatarTextColor: "rgb(91, 155, 194)",
       id: "PT-10245",
       ageGender: "32 · Female",
       lastVisit: "Aug 18",
@@ -98,6 +114,8 @@ export default function DashboardPage() {
     {
       patient: "Michael Brown",
       initials: "MB",
+      avatarColor: "rgb(232, 246, 243)",
+      avatarTextColor: "rgb(95, 184, 168)",
       id: "PT-10312",
       ageGender: "45 · Male",
       lastVisit: "Aug 16",
@@ -106,6 +124,8 @@ export default function DashboardPage() {
     {
       patient: "Olivia Davis",
       initials: "OD",
+      avatarColor: "rgb(240, 234, 248)",
+      avatarTextColor: "rgb(154, 131, 196)",
       id: "PT-10198",
       ageGender: "28 · Female",
       lastVisit: "Aug 14",
@@ -179,7 +199,7 @@ export default function DashboardPage() {
       <div className="mb-6 grid grid-cols-[2.40fr_1fr] gap-4">
         {/* Today's Appointments */}
         <Card>
-          <CardContent className="px-5 pt-1 pb-5">
+          <CardContent className="px-5 pt-1 pb-1">
             {/* Section Heading */}
             <div className="mb-4 grid grid-cols-[1fr_auto] items-start">
               <div>
@@ -217,8 +237,13 @@ export default function DashboardPage() {
                     >
                       <TableCell className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <Avatar size="sm">
-                            <AvatarFallback>
+                          <Avatar size="default">
+                            <AvatarFallback
+                              style={{
+                                backgroundColor: appointment.avatarColor,
+                                color: appointment.avatarTextColor,
+                              }}
+                            >
                               {appointment.initials}
                             </AvatarFallback>
                           </Avatar>
@@ -266,7 +291,7 @@ export default function DashboardPage() {
 
         {/* Clinical Alerts */}
         <Card>
-          <CardContent className="px-5 pt-1 pb-5">
+          <CardContent className="px-5 pt-1 pb-1">
             {/* Section Heading */}
             <div className="mb-4">
               <h3 className="text-base font-semibold">Clinical Alerts</h3>
@@ -277,28 +302,35 @@ export default function DashboardPage() {
               {clinicalAlerts.map((alert) => (
                 <div
                   key={alert.patient}
-                  className={`rounded-lg p-3 ${alert.className}`}
+                  className={`rounded-lg p-3.5 ${alert.className}`}
                 >
-                  <div className="flex items-start gap-3">
-                    <Avatar size="sm" className={alert.avatarClassName}>
-                      <AvatarFallback>{alert.initials}</AvatarFallback>
+                  {/* Avatar + Patient Name */}
+                  <div className="flex items-center gap-3">
+                    <Avatar size="default" className={alert.avatarClassName}>
+                      <AvatarFallback
+                        style={{
+                          backgroundColor: alert.avatarColor,
+                          color: alert.avatarTextColor,
+                        }}
+                      >
+                        {alert.initials}
+                      </AvatarFallback>
                     </Avatar>
 
-                    <div className="min-w-0 flex-1">
-                      <p
-                        className={`text-sm font-medium ${alert.nameClassName}`}
-                      >
-                        {alert.patient}
-                      </p>
+                    {/* <div className="min-w-0 flex-1"> */}
+                    <p className={`text-sm font-medium ${alert.nameClassName}`}>
+                      {alert.patient}
+                    </p>
+                  </div>
+                  {/* Alert Message + Time */}
+                  <div className="mt-1">
+                    <p className={`text-[13px] ${alert.messageClassName}`}>
+                      {alert.message}
+                    </p>
 
-                      <p className={`mt-0.5 text-xs ${alert.messageClassName}`}>
-                        {alert.message}
-                      </p>
-
-                      <p className={`mt-1 text-[11px] ${alert.timeClassName}`}>
-                        {alert.time}
-                      </p>
-                    </div>
+                    <p className={`mt-1 text-[11px] ${alert.timeClassName}`}>
+                      {alert.time}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -342,17 +374,22 @@ export default function DashboardPage() {
                   <TableRow key={patient.id}>
                     <TableCell className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <Avatar size="sm">
-                          <AvatarFallback>{patient.initials}</AvatarFallback>
+                        <Avatar size="default">
+                          <AvatarFallback
+                            style={{
+                              backgroundColor: patient.avatarColor,
+                              color: patient.avatarTextColor,
+                            }}
+                          >
+                            {patient.initials}
+                          </AvatarFallback>
                         </Avatar>
 
                         <span className="font-medium">{patient.patient}</span>
                       </div>
                     </TableCell>
 
-                    <TableCell className="text-muted-foreground">
-                      {patient.id}
-                    </TableCell>
+                    <TableCell>{patient.id}</TableCell>
 
                     <TableCell>{patient.ageGender}</TableCell>
 
