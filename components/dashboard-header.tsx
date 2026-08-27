@@ -1,7 +1,8 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Bell, Search } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Bell, Search } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export function DashboardHeader() {
   return (
@@ -11,7 +12,7 @@ export function DashboardHeader() {
       <div className="flex items-center gap-3">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute top-1/2 left-2.5 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search patients..."
             className="h-9 w-[220px] bg-background pl-8 text-sm"
@@ -21,8 +22,11 @@ export function DashboardHeader() {
         {/* Notification Bell */}
         <Button variant="outline" size="icon" className="relative h-9 w-9">
           <Bell className="h-[18px] w-[18px] text-muted-foreground" />
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full border-2 border-card bg-destructive" />
+          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full border-2 border-card bg-destructive" />
         </Button>
+
+        {/* Theme Toggle */}
+        <ThemeToggle />
 
         {/* User Avatar */}
         <Avatar className="h-9 w-9 cursor-pointer">
@@ -32,5 +36,5 @@ export function DashboardHeader() {
         </Avatar>
       </div>
     </header>
-  );
+  )
 }
