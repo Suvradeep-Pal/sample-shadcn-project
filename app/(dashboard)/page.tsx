@@ -17,122 +17,14 @@ import {
   TriangleAlert,
   Plus,
 } from "lucide-react"
+import {
+  appointments,
+  clinicalAlerts,
+  recentPatients,
+} from "./data/dashboard-data"
+import Link from "next/link"
 
 export default function DashboardPage() {
-  const appointments = [
-    {
-      patient: "Emily Johnson",
-      initials: "EJ",
-      avatarColor: "rgb(220, 236, 248)",
-      avatarTextColor: "rgb(91, 155, 194)",
-      time: "09:30 AM",
-      type: "Follow-up",
-      status: "Confirmed",
-    },
-    {
-      patient: "Michael Brown",
-      initials: "MB",
-      avatarColor: "rgb(232, 246, 243)",
-      avatarTextColor: "rgb(95, 184, 168)",
-      time: "10:15 AM",
-      type: "Consultation",
-      status: "Waiting",
-    },
-    {
-      patient: "Olivia Davis",
-      initials: "OD",
-      avatarColor: "rgb(240, 234, 248)",
-      avatarTextColor: "rgb(154, 131, 196)",
-      time: "11:00 AM",
-      type: "Check-up",
-      status: "Confirmed",
-    },
-    {
-      patient: "James Wilson",
-      initials: "JW",
-      avatarColor: "rgb(253, 232, 231)",
-      avatarTextColor: "rgb(217, 121, 115)",
-      time: "11:45 AM",
-      type: "Follow-up",
-      status: "Completed",
-    },
-  ]
-
-  const clinicalAlerts = [
-    {
-      patient: "John Smith",
-      initials: "JS",
-      avatarColor: "white",
-      avatarTextColor: "rgb(217, 121, 115)",
-      message: "Blood pressure reading requires review.",
-      time: "10 minutes ago",
-      className: "bg-red-50",
-      avatarClassName: "bg-white text-red-500",
-      nameClassName: "text-red-700",
-      messageClassName: "text-red-600",
-      timeClassName: "text-red-400",
-    },
-    {
-      patient: "Maria Thomas",
-      initials: "MT",
-      avatarColor: "white",
-      avatarTextColor: "rgb(231, 185, 104)",
-      message: "Follow-up appointment overdue.",
-      time: "2 hours ago",
-      className: "bg-amber-50",
-      avatarClassName: "bg-white text-amber-500",
-      nameClassName: "text-amber-700",
-      messageClassName: "text-amber-700",
-      timeClassName: "text-amber-500",
-    },
-    {
-      patient: "Robert Lee",
-      initials: "RL",
-      avatarColor: "white",
-      avatarTextColor: "rgb(95, 184, 168)",
-      message: "Lab results ready for review.",
-      time: "3 hours ago",
-      className: "bg-teal-50",
-      avatarClassName: "bg-white text-teal-600",
-      nameClassName: "text-slate-900",
-      messageClassName: "text-slate-600",
-      timeClassName: "text-slate-500",
-    },
-  ]
-
-  const recentPatients = [
-    {
-      patient: "Emily Johnson",
-      initials: "EJ",
-      avatarColor: "rgb(220, 236, 248)",
-      avatarTextColor: "rgb(91, 155, 194)",
-      id: "PT-10245",
-      ageGender: "32 · Female",
-      lastVisit: "Aug 18",
-      status: "Stable",
-    },
-    {
-      patient: "Michael Brown",
-      initials: "MB",
-      avatarColor: "rgb(232, 246, 243)",
-      avatarTextColor: "rgb(95, 184, 168)",
-      id: "PT-10312",
-      ageGender: "45 · Male",
-      lastVisit: "Aug 16",
-      status: "Follow-up",
-    },
-    {
-      patient: "Olivia Davis",
-      initials: "OD",
-      avatarColor: "rgb(240, 234, 248)",
-      avatarTextColor: "rgb(154, 131, 196)",
-      id: "PT-10198",
-      ageGender: "28 · Female",
-      lastVisit: "Aug 14",
-      status: "Stable",
-    },
-  ]
-
   return (
     <div>
       {/* Welcome Section */}
@@ -208,13 +100,19 @@ export default function DashboardPage() {
                 </h3>
               </div>
 
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 className="cursor-pointer text-primary hover:bg-transparent hover:text-primary/80"
               >
                 View all
-              </Button>
+              </Button> */}
+              <Link
+                href="/appointments"
+                className="inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-primary hover:bg-transparent hover:text-primary/80"
+              >
+                View all
+              </Link>
             </div>
 
             {/* Table */}
@@ -262,10 +160,12 @@ export default function DashboardPage() {
                         <Badge
                           className={
                             appointment.status === "Confirmed"
-                              ? "bg-green-100 text-green-700 hover:bg-green-100"
+                              ? "bg-green-100 text-green-700 hover:bg-green-100 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-900"
                               : appointment.status === "Waiting"
-                                ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-100"
+                                ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-900"
+                                : appointment.status === "Completed"
+                                  ? "bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/60 dark:text-blue-300 dark:hover:bg-blue-900/60"
+                                  : "bg-gray-100 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-800"
                           }
                         >
                           {appointment.status}
@@ -273,13 +173,12 @@ export default function DashboardPage() {
                       </TableCell>
 
                       <TableCell className="px-5 text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="cursor-pointer text-primary"
+                        <Link
+                          href={`/patients/${appointment.patientId}`}
+                          className="inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-primary hover:bg-transparent hover:text-primary/80"
                         >
                           View
-                        </Button>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -346,13 +245,19 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between px-5 pt-1 pb-4">
             <h3 className="text-base font-semibold">Recent Patients</h3>
 
-            <Button
+            {/* <Button
               variant="ghost"
               size="sm"
               className="cursor-pointer text-primary hover:bg-transparent hover:text-primary/80"
             >
               View all
-            </Button>
+            </Button> */}
+            <Link
+              href="/patients"
+              className="inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-primary hover:bg-transparent hover:text-primary/80"
+            >
+              View all
+            </Link>
           </div>
 
           {/* Table */}
@@ -399,8 +304,8 @@ export default function DashboardPage() {
                       <Badge
                         className={
                           patient.status === "Stable"
-                            ? "bg-green-100 text-green-700 hover:bg-green-100"
-                            : "bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
+                            ? "bg-green-100 text-green-700 hover:bg-green-100 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-900"
+                            : "bg-yellow-100 text-yellow-700 hover:bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-900"
                         }
                       >
                         {patient.status}
@@ -408,13 +313,12 @@ export default function DashboardPage() {
                     </TableCell>
 
                     <TableCell className="px-5 text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="cursor-pointer text-primary"
+                      <Link
+                        href={`/patients/${patient.id}`}
+                        className="inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-primary hover:bg-transparent hover:text-primary/80"
                       >
                         View
-                      </Button>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}
