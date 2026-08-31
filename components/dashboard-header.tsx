@@ -1,3 +1,6 @@
+"use client"
+
+import { usePathname } from "next/navigation"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -5,9 +8,26 @@ import { Bell, Search } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 export function DashboardHeader() {
+  const pathname = usePathname()
+
+  const isPatientPage = pathname.startsWith("/patients/")
+  const isPatientsPage = pathname === "/patients"
+  const isAppointmentsPage = pathname === "/appointments"
+  const isSettingsPage = pathname === "/settings"
+
   return (
     <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-card px-7">
-      <h1 className="text-lg font-semibold">Dashboard</h1>
+      <h1 className="text-lg font-semibold">
+        {isPatientPage
+          ? "Patient Details"
+          : isAppointmentsPage
+            ? "Today's Appointments"
+            : isPatientsPage
+              ? "Recent Patients"
+              : isSettingsPage
+                ? "Settings"
+                : "Dashboard"}
+      </h1>
 
       <div className="flex items-center gap-3">
         {/* Search */}
