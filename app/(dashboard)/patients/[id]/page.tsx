@@ -15,10 +15,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default async function PatientDetailsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ from?: string }>
 }) {
   const { id } = await params
+  const { from } = await searchParams
 
   const patient = appointments.find((patient) => patient.patientId === id)
 
@@ -26,12 +29,22 @@ export default async function PatientDetailsPage({
     return (
       <div>
         <Link
-          href="/"
+          href={
+            from === "dashboard"
+              ? "/"
+              : from === "appointments"
+                ? "/appointments"
+                : "/patients"
+          }
           className="mb-4 inline-flex items-center text-[13px] font-medium text-muted-foreground hover:text-foreground"
         >
-          ← Back to Patients
+          <ArrowLeft className="mr-1.5 h-4 w-4" />
+          {from === "dashboard"
+            ? "Back to Dashboard"
+            : from === "appointments"
+              ? "Back to Appointments"
+              : "Back to Patients"}
         </Link>
-
         <h1 className="text-2xl font-semibold">Patient Not Found</h1>
       </div>
     )
@@ -51,18 +64,28 @@ export default async function PatientDetailsPage({
     <div className="w-full">
       {/* Back to Patients */}
       <Link
-        href="/"
+        href={
+          from === "dashboard"
+            ? "/"
+            : from === "appointments"
+              ? "/appointments"
+              : "/patients"
+        }
         className="mb-4 inline-flex items-center text-[13px] font-medium text-primary hover:text-primary/80"
       >
         <ArrowLeft className="mr-1.5 h-4 w-4" />
-        Back to Patients
+        {from === "dashboard"
+          ? "Back to Dashboard"
+          : from === "appointments"
+            ? "Back to Appointments"
+            : "Back to Patients"}
       </Link>
 
       {/* Patient Header Card */}
       <Card className="mb-5 w-full py-0">
-        <CardContent className="flex items-center justify-between p-6">
+        <CardContent className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           {/* Patient Information */}
-          <div className="flex items-center gap-4">
+          <div className="flex min-w-0 items-center gap-4">
             <Avatar className="h-14 w-14">
               <AvatarFallback
                 style={{
@@ -78,20 +101,27 @@ export default async function PatientDetailsPage({
             <div>
               <h2 className="text-xl font-semibold">{patient.patient}</h2>
 
-              <div className="mt-1 flex items-center gap-4 text-[13px] text-[#253333] dark:text-[#c5d0d0]">
+              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#253333] dark:text-[#c5d0d0]">
                 <span>{patient.patientId}</span>
-                <span>•</span>
+
+                <span className="h-1 w-1 shrink-0 rounded-full bg-current" />
+
                 <span>{patient.gender}</span>
-                <span>•</span>
+
+                <span className="h-1 w-1 shrink-0 rounded-full bg-current" />
+
                 <span>{patient.age} years</span>
-                <span>•</span>
-                <span>Blood Group: {patient.bloodGroup}</span>
+
+                <span className="flex items-center gap-3 whitespace-nowrap">
+                  <span className="h-1 w-1 shrink-0 rounded-full bg-current" />
+                  <span>Blood Group: {patient.bloodGroup}</span>
+                </span>
               </div>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start">
             {patientStatus && (
               <Badge
                 className={
@@ -129,22 +159,42 @@ export default async function PatientDetailsPage({
 
       {/* Patient Details Tabs */}
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="medical-history">Medical History</TabsTrigger>
-          <TabsTrigger value="appointments">Appointments</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
+        <TabsList className="w-full justify-start overflow-x-auto">
+          <TabsTrigger
+            value="overview"
+            className="cursor-pointer whitespace-nowrap"
+          >
+            Overview
+          </TabsTrigger>
+          <TabsTrigger
+            value="medical-history"
+            className="cursor-pointer whitespace-nowrap"
+          >
+            Medical History
+          </TabsTrigger>
+          <TabsTrigger
+            value="appointments"
+            className="cursor-pointer whitespace-nowrap"
+          >
+            Appointments
+          </TabsTrigger>
+          <TabsTrigger
+            value="documents"
+            className="cursor-pointer whitespace-nowrap"
+          >
+            Documents
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview */}
         <TabsContent value="overview">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {/* Patient Information */}
             <Card className="w-full py-0">
               <CardContent className="p-5">
                 <h3 className="text-base font-semibold">Patient Information</h3>
 
-                <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
+                <div className="mt-4 grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-8">
                   <div>
                     <p className="text-[12px] text-muted-foreground">
                       Full Name
@@ -193,7 +243,7 @@ export default async function PatientDetailsPage({
                     </p>
                   </div>
 
-                  <div className="col-span-2">
+                  <div className="sm:col-span-2">
                     <p className="text-[12px] text-muted-foreground">Address</p>
                     <p className="mt-1 text-[13px] font-medium">
                       {patient.address}
@@ -205,7 +255,7 @@ export default async function PatientDetailsPage({
                 <div className="mt-5 border-t border-border pt-4">
                   <h4 className="text-sm font-semibold">Emergency Contact</h4>
 
-                  <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-5">
+                  <div className="mt-4 grid grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-8">
                     <div>
                       <p className="text-[12px] text-muted-foreground">Name</p>
                       <p className="mt-1 text-[13px] font-medium">
@@ -238,7 +288,7 @@ export default async function PatientDetailsPage({
               <CardContent className="p-5">
                 <h3 className="text-base font-semibold">Current Vitals</h3>
 
-                <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {/* Blood Pressure */}
                   <div className="rounded-lg bg-[rgb(229,245,234)] p-4 dark:bg-[rgb(25,55,38)]">
                     <p className="text-[12px] text-[rgb(63,128,86)] dark:text-[rgb(137,204,153)]">
@@ -325,7 +375,7 @@ export default async function PatientDetailsPage({
                 {patient.medicalHistory.map((history, index) => (
                   <div
                     key={`${history.date}-${history.title}`}
-                    className="relative flex gap-4"
+                    className="relative flex min-w-0 gap-4"
                   >
                     {/* Timeline */}
                     <div className="relative flex w-4 shrink-0 justify-center">
@@ -340,11 +390,11 @@ export default async function PatientDetailsPage({
 
                     {/* History Content */}
                     <div
-                      className={
+                      className={`min-w-0 ${
                         index !== patient.medicalHistory.length - 1
                           ? "pb-6"
                           : ""
-                      }
+                      }`}
                     >
                       <p className="text-[13px] text-muted-foreground">
                         {history.date}
@@ -370,7 +420,7 @@ export default async function PatientDetailsPage({
 
               {/* Recent Appointments Table */}
               <div className="-mx-6 mt-5 overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[700px]">
                   <thead>
                     <tr className="border-t border-b border-border">
                       <th className="px-6 py-3 text-left text-[14px] font-medium text-[#253333] dark:text-white">
@@ -469,11 +519,11 @@ export default async function PatientDetailsPage({
 
                     {/* History Content */}
                     <div
-                      className={
+                      className={`min-w-0 ${
                         index !== patient.medicalHistory.length - 1
                           ? "pb-6"
                           : ""
-                      }
+                      }`}
                     >
                       <p className="text-[13px] text-muted-foreground">
                         {history.date}
@@ -503,7 +553,7 @@ export default async function PatientDetailsPage({
 
               {/* Recent Appointments Table */}
               <div className="-mx-6 mt-5 overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[700px]">
                   <thead>
                     <tr className="border-t border-b border-border">
                       <th className="px-6 py-3 text-left text-[14px] font-medium text-[#253333] dark:text-white">

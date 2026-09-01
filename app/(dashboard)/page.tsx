@@ -28,7 +28,7 @@ export default function DashboardPage() {
   return (
     <div>
       {/* Welcome Section */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-semibold">Good morning, Dr. Sarah</h2>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -42,7 +42,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="mb-6 grid grid-cols-4 gap-4">
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           title="Total Patients"
           value="1,248"
@@ -88,7 +88,7 @@ export default function DashboardPage() {
       */}
 
       {/* Today's Appointments + Clinical Alerts */}
-      <div className="mb-6 grid grid-cols-[2.40fr_1fr] gap-4">
+      <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-[2.40fr_1fr]">
         {/* Today's Appointments */}
         <Card>
           <CardContent className="px-5 pt-1 pb-1">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Table */}
-            <div className="-mx-5 border-t">
+            <div className="-mx-5 max-h-[320px] overflow-x-auto overflow-y-auto border-t">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -174,7 +174,7 @@ export default function DashboardPage() {
 
                       <TableCell className="px-5 text-right">
                         <Link
-                          href={`/patients/${appointment.patientId}`}
+                          href={`/patients/${appointment.patientId}?from=dashboard`}
                           className="inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-primary hover:bg-transparent hover:text-primary/80"
                         >
                           View
@@ -261,7 +261,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Table */}
-          <div className="border-t">
+          <div className="max-h-[320px] overflow-x-auto overflow-y-auto border-t">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -314,7 +314,7 @@ export default function DashboardPage() {
 
                     <TableCell className="px-5 text-right">
                       <Link
-                        href={`/patients/${patient.id}`}
+                        href={`/patients/${patient.id}?from=dashboard`}
                         className="inline-flex h-8 items-center justify-center rounded-md px-3 text-sm font-medium text-primary hover:bg-transparent hover:text-primary/80"
                       >
                         View

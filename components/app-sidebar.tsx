@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   Sidebar,
   SidebarContent,
@@ -11,8 +11,8 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarSeparator,
-} from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+} from "@/components/ui/sidebar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   LayoutDashboard,
   Users,
@@ -20,17 +20,17 @@ import {
   Settings,
   ChevronDown,
   Plus,
-} from "lucide-react";
+} from "lucide-react"
 
 const navItems = [
   { title: "Dashboard", href: "/", icon: LayoutDashboard },
   { title: "Patients", href: "/patients", icon: Users },
   { title: "Appointments", href: "/appointments", icon: Calendar },
   { title: "Settings", href: "/settings", icon: Settings },
-];
+]
 
 export function AppSidebar() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <Sidebar className="border-r border-border">
@@ -46,7 +46,10 @@ export function AppSidebar() {
       <SidebarContent className="px-3">
         <SidebarMenu>
           {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href)
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
@@ -54,7 +57,7 @@ export function AppSidebar() {
                   className={
                     isActive
                       ? "font-medium"
-                      : "text-muted-foreground font-medium"
+                      : "font-medium text-muted-foreground"
                   }
                   render={<Link href={item.href} />}
                 >
@@ -62,7 +65,7 @@ export function AppSidebar() {
                   <span>{item.title}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            );
+            )
           })}
         </SidebarMenu>
       </SidebarContent>
@@ -83,5 +86,5 @@ export function AppSidebar() {
         </div>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }
