@@ -61,7 +61,7 @@ export default async function PatientDetailsPage({
   const patientStatus = recentPatient?.status ?? patientAppointment?.status
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* Back to Patients */}
       <Link
         href={
@@ -83,7 +83,7 @@ export default async function PatientDetailsPage({
 
       {/* Patient Header Card */}
       <Card className="mb-5 w-full py-0">
-        <CardContent className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <CardContent className="flex flex-col gap-4 p-4 xl:flex-row xl:items-center xl:justify-between xl:p-6">
           {/* Patient Information */}
           <div className="flex min-w-0 items-center gap-4">
             <Avatar className="h-14 w-14">
@@ -121,7 +121,7 @@ export default async function PatientDetailsPage({
           </div>
 
           {/* Actions */}
-          <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start">
+          <div className="flex w-full items-center justify-between gap-3 xl:w-auto xl:justify-start">
             {patientStatus && (
               <Badge
                 className={
@@ -188,7 +188,7 @@ export default async function PatientDetailsPage({
 
         {/* Overview */}
         <TabsContent value="overview">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
             {/* Patient Information */}
             <Card className="w-full py-0">
               <CardContent className="p-5">

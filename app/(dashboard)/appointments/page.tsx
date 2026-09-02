@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, ChevronLeft, ChevronRight, Search } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react"
 
 import {
   Table,
@@ -16,57 +16,58 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 
 import { appointments } from "@/app/(dashboard)/data/dashboard-data"
+import { SearchFilter } from "@/components/search-filter"
+import { useSearchFilter } from "@/hooks/use-search-filter"
+import { Pagination } from "@/components/pagination"
+import { usePagination } from "@/hooks/use-pagination"
 
 const APPOINTMENTS_PER_PAGE = 5
 
 export default function AppointmentsPage() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState("All")
+  const appointmentFilters = ["All", "Confirmed", "Waiting", "Completed"]
 
-  // Search + Filter
-  const filteredAppointments = appointments.filter((appointment) => {
-    const query = searchQuery.toLowerCase().trim()
-
-    const matchesSearch =
-      appointment.patient.toLowerCase().includes(query) ||
-      appointment.patientId.toLowerCase().includes(query)
-
-    const matchesStatus =
-      statusFilter === "All" || appointment.status === statusFilter
-
-    return matchesSearch && matchesStatus
+  const {
+    searchQuery,
+    activeFilter,
+    filteredItems: filteredAppointments,
+    handleSearch: updateSearch,
+    handleFilterChange: updateFilter,
+  } = useSearchFilter({
+    items: appointments,
+    filters: appointmentFilters,
+    getSearchText: (appointment) =>
+      `${appointment.patient} ${appointment.patientId}`,
+    getFilterValue: (appointment) => appointment.status,
   })
 
-  // Pagination
-  const totalPages = Math.ceil(
-    filteredAppointments.length / APPOINTMENTS_PER_PAGE
-  )
-
-  const startIndex = (currentPage - 1) * APPOINTMENTS_PER_PAGE
-
-  const currentAppointments = filteredAppointments.slice(
-    startIndex,
-    startIndex + APPOINTMENTS_PER_PAGE
-  )
-
-  // Search handler
   const handleSearch = (value: string) => {
-    setSearchQuery(value)
-    setCurrentPage(1)
+    updateSearch(value)
+    resetPage()
   }
 
-  // Status filter handler
-  const handleStatusFilter = (status: string) => {
-    setStatusFilter(status)
-    setCurrentPage(1)
+  const handleFilterChange = (filter: string) => {
+    updateFilter(filter)
+    resetPage()
   }
+
+  const {
+    currentPage,
+    totalPages,
+    startIndex,
+    currentItems: currentAppointments,
+    goToPage,
+    nextPage,
+    previousPage,
+    resetPage,
+  } = usePagination({
+    items: filteredAppointments,
+    itemsPerPage: APPOINTMENTS_PER_PAGE,
+  })
 
   return (
-    <div>
+    <div className="min-w-0">
       {/* Back to Dashboard */}
       <Link
         href="/"
@@ -77,37 +78,14 @@ export default function AppointmentsPage() {
       </Link>
 
       {/* Search + Filters */}
-      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        {/* Search */}
-        <div className="relative w-full sm:max-w-[280px]">
-          <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground dark:text-primary" />
-
-          <Input
-            value={searchQuery}
-            onChange={(event) => handleSearch(event.target.value)}
-            placeholder="Search by name or ID..."
-            className="h-9 bg-white pl-9 text-sm placeholder:text-muted-foreground dark:bg-background dark:placeholder:text-primary"
-          />
-        </div>
-
-        {/* Status Filters */}
-        <div className="flex w-full gap-1 overflow-x-auto sm:w-auto">
-          {["All", "Confirmed", "Waiting", "Completed"].map((status) => (
-            <button
-              key={status}
-              type="button"
-              onClick={() => handleStatusFilter(status)}
-              className={`inline-flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-md border px-3 text-[13px] font-medium transition-colors ${
-                statusFilter === status
-                  ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90 dark:hover:bg-primary/80"
-                  : "border-border bg-white text-muted-foreground hover:bg-muted dark:bg-background dark:hover:bg-muted"
-              }`}
-            >
-              {status}
-            </button>
-          ))}
-        </div>
-      </div>
+      <SearchFilter
+        searchValue={searchQuery}
+        onSearchChange={handleSearch}
+        searchPlaceholder="Search by name or ID..."
+        filters={appointmentFilters}
+        activeFilter={activeFilter}
+        onFilterChange={handleFilterChange}
+      />
 
       {/* Appointments Card */}
       <Card>
@@ -122,8 +100,8 @@ export default function AppointmentsPage() {
           </div>
 
           {/* Table */}
-          <div className="-mx-5 overflow-x-auto border-t">
-            <Table>
+          <div className="-mx-5 min-w-0 overflow-x-auto border-t">
+            <Table className="min-w-[700px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="px-5">PATIENT</TableHead>
@@ -209,72 +187,17 @@ export default function AppointmentsPage() {
           </div>
 
           {/* Pagination */}
-          <div className="flex flex-col gap-3 border-t px-5 py-3 sm:flex-row sm:items-center sm:justify-between">
-            {/* Showing text */}
-            <p className="text-[13px] whitespace-nowrap text-muted-foreground">
-              Showing{" "}
-              <span className="font-medium text-foreground">
-                {filteredAppointments.length > 0 ? startIndex + 1 : 0}
-              </span>{" "}
-              to{" "}
-              <span className="font-medium text-foreground">
-                {Math.min(
-                  startIndex + APPOINTMENTS_PER_PAGE,
-                  filteredAppointments.length
-                )}
-              </span>{" "}
-              of{" "}
-              <span className="font-medium text-foreground">
-                {filteredAppointments.length}
-              </span>{" "}
-              appointments
-            </p>
-
-            {/* Pagination Controls */}
-            <div className="flex items-center justify-center gap-1 sm:justify-end">
-              {/* Previous */}
-              <button
-                type="button"
-                onClick={() => setCurrentPage((page) => Math.max(page - 1, 1))}
-                disabled={currentPage === 1 || totalPages === 0}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-
-              {/* Page Numbers */}
-              {Array.from({ length: totalPages }, (_, index) => {
-                const page = index + 1
-
-                return (
-                  <button
-                    key={page}
-                    type="button"
-                    onClick={() => setCurrentPage(page)}
-                    className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-[13px] font-medium ${
-                      currentPage === page
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                )
-              })}
-
-              {/* Next */}
-              <button
-                type="button"
-                onClick={() =>
-                  setCurrentPage((page) => Math.min(page + 1, totalPages))
-                }
-                disabled={currentPage === totalPages || totalPages === 0}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            startIndex={startIndex}
+            totalItems={filteredAppointments.length}
+            itemsLabel="appointments"
+            itemsPerPage={APPOINTMENTS_PER_PAGE}
+            onPrevious={previousPage}
+            onNext={nextPage}
+            onPageChange={goToPage}
+          />
         </CardContent>
       </Card>
     </div>

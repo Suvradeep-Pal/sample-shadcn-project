@@ -26,7 +26,7 @@ import Link from "next/link"
 
 export default function DashboardPage() {
   return (
-    <div>
+    <div className="min-w-0">
       {/* Welcome Section */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -42,7 +42,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           title="Total Patients"
           value="1,248"
@@ -88,7 +88,7 @@ export default function DashboardPage() {
       */}
 
       {/* Today's Appointments + Clinical Alerts */}
-      <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-[2.40fr_1fr]">
+      <div className="mb-6 grid grid-cols-1 gap-4 xl:grid-cols-[2.40fr_1fr]">
         {/* Today's Appointments */}
         <Card>
           <CardContent className="px-5 pt-1 pb-1">
