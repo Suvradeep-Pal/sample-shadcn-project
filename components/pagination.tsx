@@ -44,7 +44,7 @@ export function Pagination({
           type="button"
           onClick={onPrevious}
           disabled={currentPage === 1 || totalPages === 0}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -57,7 +57,7 @@ export function Pagination({
               key={page}
               type="button"
               onClick={() => onPageChange(page)}
-              className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-[13px] font-medium ${
+              className={`inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-[13px] font-medium ${
                 currentPage === page
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-muted"
@@ -72,7 +72,7 @@ export function Pagination({
           type="button"
           onClick={onNext}
           disabled={currentPage === totalPages || totalPages === 0}
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

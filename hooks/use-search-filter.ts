@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 type UseSearchFilterOptions<T> = {
   items: T[]
   filters: string[]
   initialFilter?: string
+  debounceMs?: number
   getSearchText: (item: T) => string
   getFilterValue: (item: T) => string
 }
@@ -12,16 +13,29 @@ export function useSearchFilter<T>({
   items,
   filters,
   initialFilter,
+  debounceMs = 300,
   getSearchText,
   getFilterValue,
 }: UseSearchFilterOptions<T>) {
   const [searchQuery, setSearchQuery] = useState("")
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+    }, debounceMs)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [searchQuery, debounceMs])
+
   const [activeFilter, setActiveFilter] = useState(
     initialFilter ?? filters[0] ?? ""
   )
 
   const filteredItems = useMemo(() => {
-    const query = searchQuery.toLowerCase().trim()
+    const query = debouncedSearchQuery.toLowerCase().trim()
 
     return items.filter((item) => {
       const searchText = getSearchText(item).toLowerCase()
@@ -34,7 +48,14 @@ export function useSearchFilter<T>({
 
       return matchesSearch && matchesFilter
     })
-  }, [items, searchQuery, activeFilter, filters, getSearchText, getFilterValue])
+  }, [
+    items,
+    debouncedSearchQuery,
+    activeFilter,
+    filters,
+    getSearchText,
+    getFilterValue,
+  ])
 
   const handleSearch = (value: string) => {
     setSearchQuery(value)
