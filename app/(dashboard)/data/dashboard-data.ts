@@ -48,6 +48,26 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: ["Penicillin allergy", "Hypertension", "Non-smoker"],
+
+    documents: [
+      {
+        name: "Blood Test Results.pdf",
+        date: "Aug 18, 2026",
+        size: "240 KB",
+      },
+      {
+        name: "ECG Report.pdf",
+        date: "Jul 12, 2026",
+        size: "1.2 MB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 05, 2026",
+        size: "88 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Aug 18, 2026",
@@ -119,6 +139,26 @@ export const appointments = [
         date: "May 28, 2026",
         title: "Routine check-up",
         description: "Routine examination completed.",
+      },
+    ],
+
+    allergiesConditions: ["No known allergies", "Diabetes", "Former smoker"],
+
+    documents: [
+      {
+        name: "Diabetes Test Report.pdf",
+        date: "Aug 15, 2026",
+        size: "320 KB",
+      },
+      {
+        name: "Blood Sugar Report.pdf",
+        date: "Jul 20, 2026",
+        size: "185 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 10, 2026",
+        size: "92 KB",
       },
     ],
 
@@ -196,6 +236,26 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: ["Peanut allergy", "Asthma", "Non-smoker"],
+
+    documents: [
+      {
+        name: "Pulmonary Function Test.pdf",
+        date: "Aug 10, 2026",
+        size: "540 KB",
+      },
+      {
+        name: "Allergy Test Results.pdf",
+        date: "Jul 18, 2026",
+        size: "275 KB",
+      },
+      {
+        name: "Asthma Medication.pdf",
+        date: "Jun 22, 2026",
+        size: "105 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Aug 16, 2026",
@@ -270,6 +330,26 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: ["Aspirin sensitivity", "Arrhythmia", "Former smoker"],
+
+    documents: [
+      {
+        name: "ECG Report.pdf",
+        date: "Aug 08, 2026",
+        size: "1.1 MB",
+      },
+      {
+        name: "Cardiac Assessment.pdf",
+        date: "Jul 14, 2026",
+        size: "680 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 03, 2026",
+        size: "96 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Aug 12, 2026",
@@ -339,6 +419,26 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: ["No known allergies", "Migraine", "Non-smoker"],
+
+    documents: [
+      {
+        name: "Neurology Report.pdf",
+        date: "Aug 05, 2026",
+        size: "410 KB",
+      },
+      {
+        name: "Migraine Assessment.pdf",
+        date: "Jul 09, 2026",
+        size: "290 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 01, 2026",
+        size: "82 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Aug 10, 2026",
@@ -398,6 +498,30 @@ export const appointments = [
         date: "Jun 18, 2026",
         title: "Lab results",
         description: "Cholesterol levels reviewed.",
+      },
+    ],
+
+    allergiesConditions: [
+      "Shellfish allergy",
+      "High cholesterol",
+      "Non-smoker",
+    ],
+
+    documents: [
+      {
+        name: "Cholesterol Report.pdf",
+        date: "Aug 02, 2026",
+        size: "225 KB",
+      },
+      {
+        name: "Blood Test Results.pdf",
+        date: "Jul 11, 2026",
+        size: "350 KB",
+      },
+      {
+        name: "Dietary Assessment.pdf",
+        date: "Jun 08, 2026",
+        size: "190 KB",
       },
     ],
 
@@ -463,6 +587,30 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: [
+      "Penicillin allergy",
+      "Hypertension",
+      "Former smoker",
+    ],
+
+    documents: [
+      {
+        name: "Blood Pressure Report.pdf",
+        date: "Aug 01, 2026",
+        size: "215 KB",
+      },
+      {
+        name: "Blood Test Results.pdf",
+        date: "Jul 16, 2026",
+        size: "305 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 05, 2026",
+        size: "90 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Aug 05, 2026",
@@ -522,6 +670,26 @@ export const appointments = [
         date: "Jun 22, 2026",
         title: "Routine check-up",
         description: "Routine health examination completed.",
+      },
+    ],
+
+    allergiesConditions: ["No known allergies", "Diabetes", "Non-smoker"],
+
+    documents: [
+      {
+        name: "Diabetes Screening.pdf",
+        date: "Jul 29, 2026",
+        size: "340 KB",
+      },
+      {
+        name: "Blood Sugar Report.pdf",
+        date: "Jul 05, 2026",
+        size: "210 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 12, 2026",
+        size: "86 KB",
       },
     ],
 
@@ -587,6 +755,26 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: ["Latex allergy", "Asthma", "Non-smoker"],
+
+    documents: [
+      {
+        name: "Allergy Test Results.pdf",
+        date: "Jul 25, 2026",
+        size: "285 KB",
+      },
+      {
+        name: "Pulmonary Report.pdf",
+        date: "Jun 30, 2026",
+        size: "520 KB",
+      },
+      {
+        name: "Asthma Treatment Plan.pdf",
+        date: "Jun 08, 2026",
+        size: "145 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Jul 30, 2026",
@@ -646,6 +834,26 @@ export const appointments = [
         date: "Jun 11, 2026",
         title: "Consultation",
         description: "Initial consultation completed.",
+      },
+    ],
+
+    allergiesConditions: ["No known allergies", "Migraine", "Non-smoker"],
+
+    documents: [
+      {
+        name: "Neurology Report.pdf",
+        date: "Jul 22, 2026",
+        size: "395 KB",
+      },
+      {
+        name: "Migraine Assessment.pdf",
+        date: "Jun 18, 2026",
+        size: "265 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 02, 2026",
+        size: "84 KB",
       },
     ],
 
@@ -711,6 +919,30 @@ export const appointments = [
       },
     ],
 
+    allergiesConditions: [
+      "Penicillin allergy",
+      "Hypertension",
+      "Former smoker",
+    ],
+
+    documents: [
+      {
+        name: "Blood Pressure Report.pdf",
+        date: "Jul 18, 2026",
+        size: "220 KB",
+      },
+      {
+        name: "Cardiac Assessment.pdf",
+        date: "Jun 25, 2026",
+        size: "710 KB",
+      },
+      {
+        name: "Prescription History.pdf",
+        date: "Jun 05, 2026",
+        size: "91 KB",
+      },
+    ],
+
     recentAppointments: [
       {
         date: "Jul 20, 2026",
@@ -770,6 +1002,30 @@ export const appointments = [
         date: "May 30, 2026",
         title: "Consultation",
         description: "General consultation completed.",
+      },
+    ],
+
+    allergiesConditions: [
+      "No known allergies",
+      "High cholesterol",
+      "Non-smoker",
+    ],
+
+    documents: [
+      {
+        name: "Cholesterol Report.pdf",
+        date: "Jul 15, 2026",
+        size: "230 KB",
+      },
+      {
+        name: "Lipid Profile.pdf",
+        date: "Jun 20, 2026",
+        size: "315 KB",
+      },
+      {
+        name: "Dietary Assessment.pdf",
+        date: "Jun 03, 2026",
+        size: "175 KB",
       },
     ],
 

@@ -1,10 +1,19 @@
 "use client"
 
+import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Bell, Search, User, Settings, CircleHelp, LogOut } from "lucide-react"
+import {
+  Bell,
+  Search,
+  User,
+  Settings,
+  CircleHelp,
+  LogOut,
+  X,
+} from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import {
@@ -28,6 +37,7 @@ import { NotificationCard } from "@/components/notification-card"
 
 export function DashboardHeader() {
   const pathname = usePathname()
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
 
   const isPatientPage = pathname.startsWith("/patients/")
   const isPatientsPage = pathname === "/patients"
@@ -38,7 +48,7 @@ export function DashboardHeader() {
   ).length
 
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b border-border bg-card px-4 sm:px-7">
+    <header className="relative flex h-16 shrink-0 items-center justify-between border-b border-border bg-card px-4 sm:px-7">
       <SidebarTrigger className="md:hidden" />
       <h1 className="text-lg font-semibold">
         {isPatientPage
@@ -71,11 +81,41 @@ export function DashboardHeader() {
         </div>
 
         {/* Mobile Search */}
-        <Button variant="ghost" size="icon" className="h-9 w-9 sm:hidden">
+        {/* <Button variant="ghost" size="icon" className="h-9 w-9 sm:hidden">
+          <Search className="h-[18px] w-[18px] text-muted-foreground" />
+        </Button> */}
+
+        {mobileSearchOpen && (
+          <div className="absolute top-full right-0 left-0 z-50 border-b border-border bg-card px-4 py-3 shadow-sm sm:hidden">
+            <div className="relative">
+              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
+              <Input
+                autoFocus
+                placeholder="Search patients..."
+                className="h-10 w-full bg-background pr-9 pl-9 text-sm"
+              />
+
+              <button
+                type="button"
+                onClick={() => setMobileSearchOpen(false)}
+                className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9 sm:hidden"
+          onClick={() => setMobileSearchOpen(true)}
+        >
           <Search className="h-[18px] w-[18px] text-muted-foreground" />
         </Button>
 
-        {/* Notification Bell */}
         {/* Notification Bell */}
         <Sheet>
           <SheetTrigger className="relative inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border border-input bg-background text-sm font-medium shadow-xs transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none">
