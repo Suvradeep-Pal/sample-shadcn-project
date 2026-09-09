@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 import {
   Table,
@@ -17,7 +17,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { SearchFilter } from "@/components/search-filter"
-import { useSearchFilter } from "@/hooks/use-search-filter"
+import { useDebounce } from "@/hooks/use-debounce"
+import { useFilter } from "@/hooks/use-filter"
 import { Pagination } from "@/components/pagination"
 import { usePagination } from "@/hooks/use-pagination"
 
@@ -28,28 +29,27 @@ const PATIENTS_PER_PAGE = 5
 export default function PatientsPage() {
   const patientFilters = ["All", "Stable", "Follow-up", "Critical"]
 
-  const {
-    searchQuery,
-    activeFilter,
-    filteredItems: filteredPatients,
-    handleSearch: updateSearch,
-    handleFilterChange: updateFilter,
-  } = useSearchFilter({
-    items: recentPatients,
+  const [searchQuery, setSearchQuery] = useState("")
+  const debouncedSearchQuery = useDebounce(searchQuery, 300)
+
+  const { activeFilter, handleFilterChange: updateFilter } = useFilter({
     filters: patientFilters,
-    getSearchText: (patient) => `${patient.patient} ${patient.id}`,
-    getFilterValue: (patient) => patient.status,
   })
 
-  const handleSearch = (value: string) => {
-    updateSearch(value)
-    resetPage()
-  }
+  const filteredPatients = useMemo(() => {
+    const query = debouncedSearchQuery.toLowerCase().trim()
 
-  const handleFilterChange = (filter: string) => {
-    updateFilter(filter)
-    resetPage()
-  }
+    return recentPatients.filter((patient) => {
+      const searchText = `${patient.patient} ${patient.id}`.toLowerCase()
+
+      const matchesSearch = searchText.includes(query)
+
+      const matchesFilter =
+        activeFilter === patientFilters[0] || patient.status === activeFilter
+
+      return matchesSearch && matchesFilter
+    })
+  }, [debouncedSearchQuery, activeFilter, patientFilters])
 
   const {
     currentPage,
@@ -64,6 +64,16 @@ export default function PatientsPage() {
     items: filteredPatients,
     itemsPerPage: PATIENTS_PER_PAGE,
   })
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value)
+    resetPage()
+  }
+
+  const handleFilterChange = (filter: string) => {
+    updateFilter(filter)
+    resetPage()
+  }
 
   return (
     <div className="min-w-0">

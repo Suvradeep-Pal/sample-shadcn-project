@@ -1,5 +1,11 @@
 import Link from "next/link"
-import { MoreHorizontal, ArrowLeft } from "lucide-react"
+import {
+  MoreHorizontal,
+  ArrowLeft,
+  FileText,
+  Upload,
+  Download,
+} from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -411,6 +417,34 @@ export default async function PatientDetailsPage({
                   </div>
                 ))}
               </div>
+
+              {/* Allergies & Conditions */}
+              <div className="mt-6 border-t border-border pt-5">
+                <h4 className="text-sm font-semibold">
+                  Allergies & Conditions
+                </h4>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {patient.allergiesConditions.map((item) => (
+                    <Badge
+                      key={item}
+                      className={
+                        item.toLowerCase().includes("allergy") ||
+                        item.toLowerCase().includes("sensitivity")
+                          ? "bg-red-100 text-red-700 hover:bg-red-100 dark:bg-red-900/60 dark:text-red-300 dark:hover:bg-red-900/60"
+                          : item.toLowerCase().includes("non-smoker") ||
+                              item.toLowerCase().includes("former smoker")
+                            ? "bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/60 dark:text-blue-300 dark:hover:bg-blue-900/60"
+                            : item.toLowerCase().includes("no known allergies")
+                              ? "bg-green-100 text-green-700 hover:bg-green-100 dark:bg-green-900/60 dark:text-green-300 dark:hover:bg-green-900/60"
+                              : "bg-yellow-100 text-yellow-700 hover:bg-yellow-100 dark:bg-yellow-900/60 dark:text-yellow-300 dark:hover:bg-yellow-900/60"
+                      }
+                    >
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
             </CardContent>
           </Card>
 
@@ -540,6 +574,33 @@ export default async function PatientDetailsPage({
                   </div>
                 ))}
               </div>
+
+              <div className="mt-6 border-t border-border pt-5">
+                <h4 className="text-sm font-semibold">
+                  Allergies & Conditions
+                </h4>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {patient.allergiesConditions.map((item) => (
+                    <Badge
+                      key={item}
+                      className={
+                        item.toLowerCase().includes("allergy") ||
+                        item.toLowerCase().includes("sensitivity")
+                          ? "bg-red-100 text-red-700 hover:bg-red-100 dark:bg-red-900/60 dark:text-red-300 dark:hover:bg-red-900/60"
+                          : item.toLowerCase().includes("non-smoker") ||
+                              item.toLowerCase().includes("former smoker")
+                            ? "bg-blue-100 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/60 dark:text-blue-300 dark:hover:bg-blue-900/60"
+                            : item.toLowerCase().includes("no known allergies")
+                              ? "bg-green-100 text-green-700 hover:bg-green-100 dark:bg-green-900/60 dark:text-green-300 dark:hover:bg-green-900/60"
+                              : "bg-yellow-100 text-yellow-700 hover:bg-yellow-100 dark:bg-yellow-900/60 dark:text-yellow-300 dark:hover:bg-yellow-900/60"
+                      }
+                    >
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -618,12 +679,80 @@ export default async function PatientDetailsPage({
 
         {/* Documents */}
         <TabsContent value="documents">
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="text-base font-semibold">Documents</h3>
-              <p className="mt-2 text-[13px] text-muted-foreground">
-                Patient documents will be added here.
-              </p>
+          <Card className="mt-6 w-full">
+            <CardContent className="px-6 pt-1 pb-6">
+              {/* Header */}
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold">Documents</h3>
+
+                <Button
+                  variant="outline"
+                  className="h-9 cursor-pointer border-[#55b8ad] px-3 text-sm text-[#55b8ad] transition-colors hover:bg-[#55b8ad] hover:text-white dark:border-[#55b8ad] dark:text-[#55b8ad] dark:hover:bg-[#55b8ad] dark:hover:text-white"
+                >
+                  <Upload className="mr-1 h-4 w-4" />
+                  Upload
+                </Button>
+              </div>
+
+              {/* Document List */}
+              <div className="mt-5 space-y-3">
+                {patient.documents.map((document, index) => {
+                  const iconStyles = [
+                    {
+                      background: "bg-[#fde8e7]",
+                      icon: "text-[#e87570]",
+                    },
+                    {
+                      background: "bg-[#dcecf8]",
+                      icon: "text-[#5b9bc2]",
+                    },
+                    {
+                      background: "bg-[#e2f4f1]",
+                      icon: "text-[#55b8ad]",
+                    },
+                  ]
+
+                  const style = iconStyles[index % iconStyles.length]
+
+                  return (
+                    <div
+                      key={`${document.name}-${index}`}
+                      className="flex items-center justify-between rounded-xl border border-border px-4 py-3 transition-colors hover:bg-[#55b8ad]/5 dark:hover:bg-[#55b8ad]/10"
+                    >
+                      {/* Document Info */}
+                      <div className="flex min-w-0 items-center gap-4">
+                        <div
+                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ${style.background}`}
+                        >
+                          <FileText
+                            className={`h-5 w-5 ${style.icon}`}
+                            strokeWidth={1.8}
+                          />
+                        </div>
+
+                        <div className="min-w-0">
+                          <p className="truncate text-[15px] font-medium">
+                            {document.name}
+                          </p>
+
+                          <p className="mt-0.5 text-[13px] text-[#8a9696] dark:text-[#a6b4b4]">
+                            Uploaded {document.date} · {document.size}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Download */}
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="ml-4 shrink-0 cursor-pointer text-[#8a9696] hover:bg-transparent hover:text-[#55b8ad] dark:text-[#a6b4b4] dark:hover:bg-transparent dark:hover:text-[#55b8ad]"
+                      >
+                        <Download className="h-5 w-5" strokeWidth={1.8} />
+                      </Button>
+                    </div>
+                  )
+                })}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

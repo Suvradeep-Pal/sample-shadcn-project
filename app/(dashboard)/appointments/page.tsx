@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 import {
   Table,
@@ -19,7 +19,8 @@ import { Card, CardContent } from "@/components/ui/card"
 
 import { appointments } from "@/app/(dashboard)/data/dashboard-data"
 import { SearchFilter } from "@/components/search-filter"
-import { useSearchFilter } from "@/hooks/use-search-filter"
+import { useDebounce } from "@/hooks/use-debounce"
+import { useFilter } from "@/hooks/use-filter"
 import { Pagination } from "@/components/pagination"
 import { usePagination } from "@/hooks/use-pagination"
 
@@ -28,29 +29,29 @@ const APPOINTMENTS_PER_PAGE = 5
 export default function AppointmentsPage() {
   const appointmentFilters = ["All", "Confirmed", "Waiting", "Completed"]
 
-  const {
-    searchQuery,
-    activeFilter,
-    filteredItems: filteredAppointments,
-    handleSearch: updateSearch,
-    handleFilterChange: updateFilter,
-  } = useSearchFilter({
-    items: appointments,
+  const [searchQuery, setSearchQuery] = useState("")
+  const debouncedSearchQuery = useDebounce(searchQuery, 300)
+
+  const { activeFilter, handleFilterChange: updateFilter } = useFilter({
     filters: appointmentFilters,
-    getSearchText: (appointment) =>
-      `${appointment.patient} ${appointment.patientId}`,
-    getFilterValue: (appointment) => appointment.status,
   })
 
-  const handleSearch = (value: string) => {
-    updateSearch(value)
-    resetPage()
-  }
+  const filteredAppointments = useMemo(() => {
+    const query = debouncedSearchQuery.toLowerCase().trim()
 
-  const handleFilterChange = (filter: string) => {
-    updateFilter(filter)
-    resetPage()
-  }
+    return appointments.filter((appointment) => {
+      const searchText =
+        `${appointment.patient} ${appointment.patientId}`.toLowerCase()
+
+      const matchesSearch = searchText.includes(query)
+
+      const matchesFilter =
+        activeFilter === appointmentFilters[0] ||
+        appointment.status === activeFilter
+
+      return matchesSearch && matchesFilter
+    })
+  }, [debouncedSearchQuery, activeFilter, appointmentFilters])
 
   const {
     currentPage,
@@ -65,6 +66,16 @@ export default function AppointmentsPage() {
     items: filteredAppointments,
     itemsPerPage: APPOINTMENTS_PER_PAGE,
   })
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value)
+    resetPage()
+  }
+
+  const handleFilterChange = (filter: string) => {
+    updateFilter(filter)
+    resetPage()
+  }
 
   return (
     <div className="min-w-0">
